@@ -37,3 +37,11 @@ python manage.py runserver
 
 - Only `.wav` audio files are supported for speech translation.
 - Ensure you have the correct format for both text and audio translations.
+
+
+##SAMPLE OUTPUT
+![Uploading Screenshot 2024-07-22 at 3.29.15 PM.p![Uploading Screenshot 2024-07-22 at 3.32.33 PM.png…]()
+ng…]()![Uploading Screenshot 2024-07-22 at 3.33.06 PM.png…]()
+
+
+
