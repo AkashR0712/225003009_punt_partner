@@ -19,4 +19,5 @@
       "DJANGO_SETTINGS_MODULE": "language_translate.settings",
       "DATABASE_URL": "",
       "SECRET_KEY": ""
-    }
+    } 
+}
