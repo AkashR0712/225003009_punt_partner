@@ -56,12 +56,19 @@
             margin-top: 10px;
             width: 100%;
         }
+        .info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <h1>Language Translation Application</h1>
     <div class="container">
-        <!-- Text Translation Form -->
         <form id="text-translation-form" method="post">
             {% csrf_token %}
             <textarea name="text" placeholder="Enter text to translate" rows="4" required></textarea>
@@ -73,15 +80,15 @@
                 <option value="zh-cn">Chinese (Simplified)</option>
                 <option value="ja">Japanese</option>
                 <option value="ko">Korean</option>
-                <!-- Add more languages as needed -->
             </select>
             <button type="submit">Translate Text</button>
         </form>
         
-        <!-- Speech Translation Form -->
+        <!-- Speech Tranlation submission Form  --> 
+
         <form id="speech-translation-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="audio" accept="audio/*" required>
+            <input type="file" name="audio" accept="audio/wav" required>
             <select name="target_language" required>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
@@ -89,17 +96,20 @@
                 <option value="en">English</option>
                 <option value="zh-cn">Chinese (Simplified)</option>
                 <option value="ja">Japanese</option>
-                <option value="ko">Korean</option>
-                <!-- Add more languages as needed -->
+                <option value="ko">Korean</option> 
             </select>
             <button type="submit">Translate Speech</button>
         </form>
-        
-        <!-- Results Display -->
+
+        <div class="info">
+            <p><strong>Note:</strong> Only .wav audio files are supported for speech translation.</p>
+        </div>
         <div id="result" class="result"></div>
     </div>
     
     <script>
+        let currentUtterance = null;
+
         const languageNames = {
             'es': 'Spanish',
             'fr': 'French',
@@ -108,7 +118,6 @@
             'zh-cn': 'Chinese (Simplified)',
             'ja': 'Japanese',
             'ko': 'Korean'
-            // Add more languages as needed
         };
 
         document.getElementById('text-translation-form').addEventListener('submit', async function(e) {
@@ -134,18 +143,23 @@
         });
 
         function displayResult(result) {
+            const detectedLanguage = result.detected_language || '';
             const translatedText = result.translated_text || '';
             const audioContent = result.audio_content || '';
 
             let resultHTML = '';
 
-            if (result.detected_language) {
-                const detectedLanguageFull = languageNames[result.detected_language] || result.detected_language;
+            if (detectedLanguage) {
+                const detectedLanguageFull = languageNames[detectedLanguage] || detectedLanguage;
                 resultHTML += `<p>Detected language is: ${detectedLanguageFull}</p>`;
             }
 
             if (translatedText) {
                 resultHTML += `<p>TRANSLATED_TEXT: ${translatedText}</p>`;
+                resultHTML += `
+                    <button onclick="playTranslatedText('${translatedText}')">Play Translated Text</button>
+                    <button onclick="stopPlayback()">Stop Playback</button>
+                `;
             }
 
             if (audioContent) {
@@ -158,6 +172,23 @@
             }
 
             document.getElementById('result').innerHTML = resultHTML;
+        }
+
+        function playTranslatedText(text) {
+            if ('speechSynthesis' in window) {
+                if (currentUtterance) {
+                    window.speechSynthesis.cancel();
+                }
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(currentUtterance);
+            } else {
+                alert('Sorry, your browser does not support speech synthesis.');
+            }
+        }
+
+        function stopPlayback() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
         }
     </script>
 </body>
