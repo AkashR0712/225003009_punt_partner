@@ -40,8 +40,7 @@ python manage.py runserver
 
 
 ##SAMPLE OUTPUT
-![Uploading Screenshot 2024-07-22 at 3.29.15 PM.p![Uploading Screenshot 2024-07-22 at 3.32.33 PM.png…]()
-ng…]()![Uploading Screenshot 2024-07-22 at 3.33.06 PM.png…]()
 
 
+<img width="1440" alt="Screenshot 2024-07-22 at 3 29 15 PM" src="https://github.com/user-attachments/assets/754defec-0796-4cc5-9ecd-335d5bb75bab">
 
